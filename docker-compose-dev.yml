@@ -1,0 +1,25 @@
+version: '3.9'
+services:
+  nginx: 
+    image: nginx:stable-alpine
+    ports:
+      - "3000:80"
+  node-app:
+   
+    environment:
+      - NODE_ENV=development
+      - MONGO_USER=koushik
+      - MONGO_PASSWORD=krishna
+      - SESSION_SECRET=secret
+    command: npm run dev
+    volumes:
+      - .:/app
+      - /app/node_modules
+    
+    # ports:
+    #   - "3000:3000"
+  mongo:
+    image: mongo:latest    
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=koushik
+      - MONGO_INITDB_ROOT_PASSWORD=krishna

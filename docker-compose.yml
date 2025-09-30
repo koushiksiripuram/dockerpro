@@ -1,0 +1,36 @@
+version: '3.9'
+services:
+  nginx: 
+    image: nginx:stable-alpine
+    ports:
+      - "3000:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+  node-app:
+    build: .
+    # ports:
+    #   - "3000:3000"
+    volumes:
+      - ./:/app
+      
+    environment:
+      - PORT=3000
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:latest
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=koushik
+      - MONGO_INITDB_ROOT_PASSWORD=krishna
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-db:/data/db
+  redis:
+    image: redis:7.2
+    ports:
+      - "6379:6379"
+volumes:
+  mongo-db:
